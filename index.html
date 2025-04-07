@@ -13,42 +13,8 @@
       margin: 0;
       padding: 20px;
       color: #263238;
-      /* Fallback background */
       background: linear-gradient(to bottom right, #e3f2fd, #fce4ec);
       transition: background 0.5s ease;
-    }
-    /* Weather-based animation overlays */
-    .rainy::after {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><circle cx="50" cy="50" r="2" fill="%23B0BEC5"/><circle cx="150" cy="100" r="3" fill="%23B0BEC5"/><circle cx="100" cy="150" r="2" fill="%23B0BEC5"/></svg>');
-      opacity: 0.3;
-      animation: rain 3s linear infinite;
-    }
-    @keyframes rain {
-      from { transform: translateY(-100%); }
-      to { transform: translateY(100%); }
-    }
-    .cloudy::after {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><ellipse cx="100" cy="100" rx="50" ry="30" fill="%23CFD8DC"/></svg>');
-      opacity: 0.2;
-      animation: float 10s linear infinite;
-    }
-    @keyframes float {
-      from { transform: translateX(-100%); }
-      to { transform: translateX(100%); }
     }
     h1 {
       text-align: center;
@@ -151,144 +117,22 @@
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.4); }
     }
-  </style>
-</head>
-<body>
-  <h1>My Smart Wellbeing Dashboard</h1>
-  <div class="dashboard-grid">
-    <div class="section">
-      <h2 id="greeting">Loading greeting...</h2>
-      <div class="focus-box" id="focusBox">🎯 Your daily focus will appear here.</div>
-      <div class="weather-box" id="weatherTip">🌤️ Weather insights loading...</div>
-      <div class="energy-box" id="energyEstimate">⚡ Estimated energy will be shown here.</div>
-    </div>
-    <div class="section">
-      <h2>Mood Tracker</h2>
-      <div style="text-align:center;">
-        <span class="emoji-button" onclick="selectMood('😊')">😊</span>
-        <span class="emoji-button" onclick="selectMood('😐')">😐</span>
-        <span class="emoji-button" onclick="selectMood('😢')">😢</span>
-        <span class="emoji-button" onclick="selectMood('😠')">😠</span>
-        <span class="emoji-button" onclick="selectMood('😴')">😴</span>
-      </div>
-      <p id="selectedMood">Your selected mood will appear here.</p>
-      <div class="encouragement-box" id="emotionSupport">💬 Mood reflection will show here.</div>
-    </div>
-    <div class="section">
-      <h2>Daily Self-Care</h2>
-      <div class="checkbox-group" onchange="updateEncouragement()">
-        <label><input type="checkbox"> Drank enough water</label>
-        <label><input type="checkbox"> Got some movement</label>
-        <label><input type="checkbox"> Took 5 deep breaths</label>
-        <label><input type="checkbox"> Unplugged from screen</label>
-      </div>
-      <div class="encouragement-box" id="encouragement">🧠 Your encouragement feedback will appear here.</div>
-    </div>
-    <div class="section">
-      <h2>Affirmation</h2>
-      <button onclick="generateAffirmation()">Inspire Me</button>
-      <div class="affirmation-box" id="affirmationBox">🌟 Your daily affirmation will show here.</div>
-    </div>
-    <div class="section">
-      <h2>Mindful Breathing</h2>
-      <div class="breathe-box">
-        <p>Follow the circle. Inhale... Exhale...</p>
-        <div class="circle"></div>
-      </div>
-    </div>
-    <div class="section">
-      <h2>Reflection</h2>
-      <div class="quote-box">
-        "Even on the hardest days, I made time to breathe, reflect, and reset."
-      </div>
-      <textarea placeholder="Write your thoughts here..."></textarea>
-    </div>
-    <div class="section">
-      <h2>Focus Tracker</h2>
-      <div class="checkbox-group">
-        <label><input type="checkbox"> Eat mindfully</label>
-        <label><input type="checkbox"> Unplug for 1 hour</label>
-        <label><input type="checkbox"> Compliment yourself</label>
-      </div>
-    </div>
-    <div class="section">
-      <h2>Wind-Down Checklist</h2>
-      <div class="winddown-box" id="windDownChecklist">🌙 Your night routine checklist will appear here after 7PM.</div>
-    </div>
-    <div class="section">
-      <h2>Coping Chart</h2>
-      <canvas id="stressChartCanvas"></canvas>
-    </div>
-  </div>
-  
-  <script>
-    // Declare weather API key only once
-    const weatherApiKey = 'ddc3ba1703bde1ca03ae05e232c14db5';
-    
-    // Function to update theme and animation based on weather
-    function updateWeatherTheme(weatherDescription) {
-      let newBgTheme = "linear-gradient(to bottom right, #e3f2fd, #fce4ec)";
-      // Remove any weather classes from body
-      document.body.classList.remove("rainy", "cloudy", "clear");
-      
-      if (weatherDescription.toLowerCase().includes("rain")) {
-        newBgTheme = "linear-gradient(to bottom right, #90a4ae, #eceff1)";
-        document.body.classList.add("rainy");
-      } else if (weatherDescription.toLowerCase().includes("cloud")) {
-        newBgTheme = "linear-gradient(to bottom right, #CFD8DC, #ECEFF1)";
-        document.body.classList.add("cloudy");
-      } else if (weatherDescription.toLowerCase().includes("clear")) {
-        newBgTheme = "linear-gradient(to bottom right, #FFF8E1, #FFECB3)";
-        document.body.classList.add("clear");
-      }
-      document.body.style.setProperty('--bg-gradient', newBgTheme);
+    /* Weather-based animations */
+    .rain-animation {
+      animation: rainEffect 2s infinite;
     }
-    
-    // Function to fetch weather data using geolocation
-    function fetchWeather() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          function(position) {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=metric`;
-            fetch(weatherUrl)
-              .then(response => response.json())
-              .then(data => {
-                const weatherDescription = data.weather[0].description;
-                const temperature = data.main.temp;
-                let weatherMsg = "";
-                if (weatherDescription.toLowerCase().includes("rain")) {
-                  weatherMsg = `🌧️ ${temperature}°C - ${weatherDescription}. Don't forget your umbrella!`;
-                } else if (weatherDescription.toLowerCase().includes("cloud")) {
-                  weatherMsg = `☁️ ${temperature}°C - ${weatherDescription}. A perfect day to relax indoors.`;
-                } else if (weatherDescription.toLowerCase().includes("clear")) {
-                  weatherMsg = `☀️ ${temperature}°C - ${weatherDescription}. Enjoy the sunshine!`;
-                } else {
-                  weatherMsg = `🌤️ ${temperature}°C - ${weatherDescription}.`;
-                }
-                document.getElementById("weatherTip").innerText = weatherMsg;
-                updateWeatherTheme(weatherDescription);
-              })
-              .catch(error => {
-                document.getElementById("weatherTip").innerText = "🌧️ Could not fetch weather data";
-              });
-          },
-          function(error) {
-            // Fallback: use static city (London)
-            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=London&appid=${weatherApiKey}&units=metric`;
-            fetch(weatherUrl)
-              .then(response => response.json())
-              .then(data => {
-                const weatherDescription = data.weather[0].description;
-                const temperature = data.main.temp;
-                let weatherMsg = "";
-                if (weatherDescription.toLowerCase().includes("rain")) {
-                  weatherMsg = `🌧️ ${temperature}°C - ${weatherDescription}. Don't forget your umbrella!`;
-                } else if (weatherDescription.toLowerCase().includes("cloud")) {
-                  weatherMsg = `☁️ ${temperature}°C - ${weatherDescription}. A perfect day to relax indoors.`;
-                } else if (weatherDescription.toLowerCase().includes("clear")) {
-                  weatherMsg = `☀️ ${temperature}°C - ${weatherDescription}. Enjoy the sunshine!`;
-                } else {\n                  weatherMsg = `🌤️ ${temperature}°C - ${weatherDescription}.`;\n                }\n                document.getElementById(\"weatherTip\").innerText = weatherMsg;\n                updateWeatherTheme(weatherDescription);\n              })\n              .catch(error => {\n                document.getElementById(\"weatherTip\").innerText = \"🌧️ Could not fetch weather data\";\n              });\n          }\n        );\n      } else {\n        // Geolocation not supported, fallback to static city (London)\n        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=London&appid=${weatherApiKey}&units=metric`;\n        fetch(weatherUrl)\n          .then(response => response.json())\n          .then(data => {\n            const weatherDescription = data.weather[0].description;\n            const temperature = data.main.temp;\n            let weatherMsg = \"\";\n            if (weatherDescription.toLowerCase().includes(\"rain\")) {\n              weatherMsg = `🌧️ ${temperature}°C - ${weatherDescription}. Don't forget your umbrella!`;\n            } else if (weatherDescription.toLowerCase().includes(\"cloud\")) {\n              weatherMsg = `☁️ ${temperature}°C - ${weatherDescription}. A perfect day to relax indoors.`;\n            } else if (weatherDescription.toLowerCase().includes(\"clear\")) {\n              weatherMsg = `☀️ ${temperature}°C - ${weatherDescription}. Enjoy the sunshine!`;\n            } else {\n              weatherMsg = `🌤️ ${temperature}°C - ${weatherDescription}.`;\n            }\n            document.getElementById(\"weatherTip\").innerText = weatherMsg;\n            updateWeatherTheme(weatherDescription);\n          })\n          .catch(error => {\n            document.getElementById(\"weatherTip\").innerText = \"🌧️ Could not fetch weather data\";\n          });\n      }\n    }\n    
-    function personalizeDashboard() {\n      const hour = new Date().getHours();\n      const mood = localStorage.getItem('mood');\n      \n      let greeting = hour < 12 ? \"Good Morning!\" : hour < 18 ? \"Good Afternoon!\" : \"Good Evening!\";\n      document.getElementById(\"greeting\").innerText = greeting;\n      \n      const focusOptions = [\"Hydrate regularly\", \"Take 3 deep breaths\", \"Journal for 5 minutes\", \"Unplug and go for a walk\"];\n      document.getElementById(\"focusBox\").innerText = `🎯 Focus of the day: ${focusOptions[Math.floor(Math.random() * focusOptions.length)]}`;\n      \n      let support = \"💬 How are you feeling today?\";\n      if (mood === \"😢\" || mood === \"😠\") support = \"It's okay to feel this way. Take a pause and be gentle with yourself.\";\n      else if (mood === \"😊\") support = \"You're glowing today. Keep the good vibes flowing!\";\n      else if (mood === \"😴\") support = \"You might need some extra rest and downtime.\";\n      document.getElementById(\"emotionSupport\").innerText = support;\n      \n      let energyLevel = hour < 11 ? \"High\" : hour < 17 ? \"Medium\" : \"Low\";\n      document.getElementById(\"energyEstimate\").innerText = `⚡ Estimated Energy: ${energyLevel}`;\n      \n      // Fetch real weather data\n      fetchWeather();\n      \n      let bgTheme = \"linear-gradient(to bottom right, #e3f2fd, #fce4ec)\";\n      if (mood === \"😴\") bgTheme = \"linear-gradient(to bottom right, #cfd8dc, #eceff1)\";\n      if (hour >= 19) bgTheme = \"linear-gradient(to bottom right, #bcaaa4, #efebe9)\";\n      document.body.style.setProperty('--bg-gradient', bgTheme);\n      \n      if (hour >= 19) {\n        document.getElementById(\"windDownChecklist\").innerHTML = `\n          <strong>Night Routine:</strong><br>\n          ☑️ Turn off screens early<br>\n          ☑️ Stretch or reflect<br>\n          ☑️ Express gratitude\n        `;\n      }\n    }\n    \n    function selectMood(mood) {\n      document.getElementById('selectedMood').innerText = `Today's mood: ${mood}`;\n      localStorage.setItem('mood', mood);\n      personalizeDashboard();\n    }\n    \n    function generateAffirmation() {\n      const affirmations = [\n        \"I am doing the best I can, and that is enough.\",\n        \"I take time to care for my mind and body.\",\n        \"Challenges help me grow stronger.\",\n        \"I deserve rest and kindness.\",\n        \"Wellbeing is a journey, not a destination.\"\n      ];\n      const random = affirmations[Math.floor(Math.random() * affirmations.length)];\n      document.getElementById('affirmationBox').innerText = random;\n    }\n    \n    function updateEncouragement() {\n      const checkboxes = document.querySelectorAll('.checkbox-group input[type=\"checkbox\"]');\n      let checkedCount = 0;\n      checkboxes.forEach(cb => { if (cb.checked) checkedCount++; });\n      let msg = '';\n      if (checkedCount === 0) msg = \"🤍 Be kind to yourself—tomorrow’s a new chance.\";\n      else if (checkedCount < 3) msg = \"🌱 Nice work, you're making progress.\";\n      else msg = \"💪 You’re on fire today!\";\n      document.getElementById('encouragement').innerText = msg;\n    }\n    \n    const chartCanvas = document.getElementById('stressChartCanvas').getContext('2d');\n    const stressChart = new Chart(chartCanvas, {\n      type: 'bar',\n      data: {\n        labels: ['Rest', 'Movement', 'Support', 'Reflection'],\n        datasets: [{\n          label: 'Coping Activity (%)',\n          data: [70, 50, 40, 60],\n          backgroundColor: ['#ffb74d', '#ff8a65', '#ffcc80', '#ffab91'],\n          borderRadius: 6\n        }]\n      },\n      options: {\n        responsive: true,\n        scales: {\n          y: {\n            beginAtZero: true,\n            max: 100\n          }\n        }\n      }\n    });\n    \n    window.addEventListener('DOMContentLoaded', personalizeDashboard);\n  </script>\n</body>\n</html>
-Ï
+    @keyframes rainEffect {
+      0% { transform: translateY(0px); opacity: 1; }
+      50% { transform: translateY(5px); opacity: 0.8; }
+      100% { transform: translateY(0px); opacity: 1; }
+    }
+    .cloud-animation {
+      animation: cloudDrift 5s infinite linear;
+    }
+    @keyframes cloudDrift {
+      0% { transform: translateX(0px); }
+      50% { transform: translateX(10px); }
+      100% { transform: translateX(0px); }
+    }
+    .sunshine-animation {
+      animation: sunshineGlow 3s infinite alternate;\n}\n@keyframes sunshineGlow {\n  from { filter: brightness(1); }\n  to { filter: brightness(1.2); }\n}\n  </style>\n</head>\n<body>\n  <h1>My Smart Wellbeing Dashboard</h1>\n  <div class=\"dashboard-grid\">\n    <div class=\"section\">\n      <h2 id=\"greeting\">Loading greeting...</h2>\n      <div class=\"focus-box\" id=\"focusBox\">🎯 Your daily focus will appear here.</div>\n      <div class=\"weather-box\" id=\"weatherTip\">🌤️ Weather insights loading...</div>\n      <div class=\"energy-box\" id=\"energyEstimate\">⚡ Estimated energy will be shown here.</div>\n    </div>\n    <div class=\"section\">\n      <h2>Mood Tracker</h2>\n      <div style=\"text-align:center;\">\n        <span class=\"emoji-button\" onclick=\"selectMood('😊')\">😊</span>\n        <span class=\"emoji-button\" onclick=\"selectMood('😐')\">😐</span>\n        <span class=\"emoji-button\" onclick=\"selectMood('😢')\">😢</span>\n        <span class=\"emoji-button\" onclick=\"selectMood('😠')\">😠</span>\n        <span class=\"emoji-button\" onclick=\"selectMood('😴')\">😴</span>\n      </div>\n      <p id=\"selectedMood\">Your selected mood will appear here.</p>\n      <div class=\"encouragement-box\" id=\"emotionSupport\">💬 Mood reflection will show here.</div>\n    </div>\n    <div class=\"section\">\n      <h2>Daily Self-Care</h2>\n      <div class=\"checkbox-group\" onchange=\"updateEncouragement()\">\n        <label><input type=\"checkbox\"> Drank enough water</label>\n        <label><input type=\"checkbox\"> Got some movement</label>\n        <label><input type=\"checkbox\"> Took 5 deep breaths</label>\n        <label><input type=\"checkbox\"> Unplugged from screen</label>\n      </div>\n      <div class=\"encouragement-box\" id=\"encouragement\">🧠 Your encouragement feedback will appear here.</div>\n    </div>\n    <div class=\"section\">\n      <h2>Affirmation</h2>\n      <button onclick=\"generateAffirmation()\">Inspire Me</button>\n      <div class=\"affirmation-box\" id=\"affirmationBox\">🌟 Your daily affirmation will show here.</div>\n    </div>\n    <div class=\"section\">\n      <h2>Mindful Breathing</h2>\n      <div class=\"breathe-box\">\n        <p>Follow the circle. Inhale... Exhale...</p>\n        <div class=\"circle\"></div>\n      </div>\n    </div>\n    <div class=\"section\">\n      <h2>Reflection</h2>\n      <div class=\"quote-box\">\n        \"Even on the hardest days, I made time to breathe, reflect, and reset.\"\n      </div>\n      <textarea placeholder=\"Write your thoughts here...\"></textarea>\n    </div>\n    <div class=\"section\">\n      <h2>Focus Tracker</h2>\n      <div class=\"checkbox-group\">\n        <label><input type=\"checkbox\"> Eat mindfully</label>\n        <label><input type=\"checkbox\"> Unplug for 1 hour</label>\n        <label><input type=\"checkbox\"> Compliment yourself</label>\n      </div>\n    </div>\n    <div class=\"section\">\n      <h2>Wind-Down Checklist</h2>\n      <div class=\"winddown-box\" id=\"windDownChecklist\">🌙 Your night routine checklist will appear here after 7PM.</div>\n    </div>\n    <div class=\"section\">\n      <h2>Coping Chart</h2>\n      <canvas id=\"stressChartCanvas\"></canvas>\n    </div>\n  </div>\n  <script>\n    // Declare weather API key only once\n    const weatherApiKey = 'ddc3ba1703bde1ca03ae05e232c14db5';\n    \n    // Function to update theme and add animation based on weather description\n    function updateWeatherTheme(weatherDescription) {\n      let bgTheme = \"linear-gradient(to bottom right, #e3f2fd, #fce4ec)\";\n      let animationClass = \"\";\n      \n      if (weatherDescription.toLowerCase().includes(\"rain\")) {\n        bgTheme = \"linear-gradient(to bottom right, #90a4ae, #eceff1)\";\n        animationClass = \"rain-animation\";\n      } else if (weatherDescription.toLowerCase().includes(\"cloud\")) {\n        bgTheme = \"linear-gradient(to bottom right, #CFD8DC, #ECEFF1)\";\n        animationClass = \"cloud-animation\";\n      } else if (weatherDescription.toLowerCase().includes(\"clear\")) {\n        bgTheme = \"linear-gradient(to bottom right, #FFF8E1, #FFECB3)\";\n        animationClass = \"sunshine-animation\";\n      }\n      document.body.style.setProperty('--bg-gradient', bgTheme);\n      const weatherBox = document.getElementById(\"weatherTip\");\n      if (weatherBox) {\n        weatherBox.classList.remove(\"rain-animation\", \"cloud-animation\", \"sunshine-animation\");\n        if (animationClass) {\n          weatherBox.classList.add(animationClass);\n        }\n      }\n    }\n    \n    // CSS for weather animations\n    const style = document.createElement('style');\n    style.innerHTML = `\n      .rain-animation {\n        animation: rainEffect 2s infinite;\n      }\n      @keyframes rainEffect {\n        0% { transform: translateY(0px); opacity: 1; }\n        50% { transform: translateY(5px); opacity: 0.8; }\n        100% { transform: translateY(0px); opacity: 1; }\n      }\n      .cloud-animation {\n        animation: cloudDrift 5s infinite linear;\n      }\n      @keyframes cloudDrift {\n        0% { transform: translateX(0px); }\n        50% { transform: translateX(10px); }\n        100% { transform: translateX(0px); }\n      }\n      .sunshine-animation {\n        animation: sunshineGlow 3s infinite alternate;\n      }\n      @keyframes sunshineGlow {\n        from { filter: brightness(1); }\n        to { filter: brightness(1.2); }\n      }\n    `;\n    document.head.appendChild(style);\n    \n    // Function to fetch weather data using geolocation if available\n    function fetchWeather() {\n      if (navigator.geolocation) {\n        navigator.geolocation.getCurrentPosition(\n          function(position) {\n            const lat = position.coords.latitude;\n            const lon = position.coords.longitude;\n            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=metric`;\n            fetch(weatherUrl)\n              .then(response => response.json())\n              .then(data => {\n                const weatherDescription = data.weather[0].description;\n                const temperature = data.main.temp;\n                let weatherMsg = \"\";\n                if (weatherDescription.toLowerCase().includes(\"rain\")) {\n                  weatherMsg = `🌧️ ${temperature}°C - ${weatherDescription}. Don't forget your umbrella!`;\n                } else if (weatherDescription.toLowerCase().includes(\"cloud\")) {\n                  weatherMsg = `☁️ ${temperature}°C - ${weatherDescription}. A great day for gentle reflection.`;\n                } else if (weatherDescription.toLowerCase().includes(\"clear\")) {\n                  weatherMsg = `☀️ ${temperature}°C - ${weatherDescription}. Enjoy the sunshine!`;\n                } else {\n                  weatherMsg = `🌤️ ${temperature}°C - ${weatherDescription}.`;\n                }\n                document.getElementById(\"weatherTip\").innerText = weatherMsg;\n                updateWeatherTheme(weatherDescription);\n              })\n              .catch(error => {\n                document.getElementById(\"weatherTip\").innerText = \"🌧️ Could not fetch weather data\";\n              });\n          },\n          function(error) {\n            // Fallback: use static city (London)\n            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=London&appid=${weatherApiKey}&units=metric`;\n            fetch(weatherUrl)\n              .then(response => response.json())\n              .then(data => {\n                const weatherDescription = data.weather[0].description;\n                const temperature = data.main.temp;\n                let weatherMsg = \"\";\n                if (weatherDescription.toLowerCase().includes(\"rain\")) {\n                  weatherMsg = `🌧️ ${temperature}°C - ${weatherDescription}. Don't forget your umbrella!`;\n                } else if (weatherDescription.toLowerCase().includes(\"cloud\")) {\n                  weatherMsg = `☁️ ${temperature}°C - ${weatherDescription}. A great day for gentle reflection.`;\n                } else if (weatherDescription.toLowerCase().includes(\"clear\")) {\n                  weatherMsg = `☀️ ${temperature}°C - ${weatherDescription}. Enjoy the sunshine!`;\n                } else {\n                  weatherMsg = `🌤️ ${temperature}°C - ${weatherDescription}.`;\n                }\n                document.getElementById(\"weatherTip\").innerText = weatherMsg;\n                updateWeatherTheme(weatherDescription);\n              })\n              .catch(error => {\n                document.getElementById(\"weatherTip\").innerText = \"🌧️ Could not fetch weather data\";\n              });\n          }\n        );\n      } else {\n        // Geolocation not supported, fallback to static city (London)\n        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=London&appid=${weatherApiKey}&units=metric`;\n        fetch(weatherUrl)\n          .then(response => response.json())\n          .then(data => {\n            const weatherDescription = data.weather[0].description;\n            const temperature = data.main.temp;\n            let weatherMsg = \"\";\n            if (weatherDescription.toLowerCase().includes(\"rain\")) {\n              weatherMsg = `🌧️ ${temperature}°C - ${weatherDescription}. Don't forget your umbrella!`;\n            } else if (weatherDescription.toLowerCase().includes(\"cloud\")) {\n              weatherMsg = `☁️ ${temperature}°C - ${weatherDescription}. A great day for gentle reflection.`;\n            } else if (weatherDescription.toLowerCase().includes(\"clear\")) {\n              weatherMsg = `☀️ ${temperature}°C - ${weatherDescription}. Enjoy the sunshine!`;\n            } else {\n              weatherMsg = `🌤️ ${temperature}°C - ${weatherDescription}.`;\n            }\n            document.getElementById(\"weatherTip\").innerText = weatherMsg;\n            updateWeatherTheme(weatherDescription);\n          })\n          .catch(error => {\n            document.getElementById(\"weatherTip\").innerText = \"🌧️ Could not fetch weather data\";\n          });\n      }\n    }\n\n    function personalizeDashboard() {\n      const hour = new Date().getHours();\n      const mood = localStorage.getItem('mood');\n      \n      let greeting = hour < 12 ? \"Good Morning!\" : hour < 18 ? \"Good Afternoon!\" : \"Good Evening!\";\n      document.getElementById(\"greeting\").innerText = greeting;\n      \n      const focusOptions = [\"Hydrate regularly\", \"Take 3 deep breaths\", \"Journal for 5 minutes\", \"Unplug and go for a walk\"];\n      document.getElementById(\"focusBox\").innerText = `🎯 Focus of the day: ${focusOptions[Math.floor(Math.random() * focusOptions.length)]}`;\n      \n      let support = \"💬 How are you feeling today?\";\n      if (mood === \"😢\" || mood === \"😠\") support = \"It's okay to feel this way. Take a pause and be gentle with yourself.\";\n      else if (mood === \"😊\") support = \"You're glowing today. Keep the good vibes flowing!\";\n      else if (mood === \"😴\") support = \"You might need some extra rest and downtime.\";\n      document.getElementById(\"emotionSupport\").innerText = support;\n      \n      let energyLevel = hour < 11 ? \"High\" : hour < 17 ? \"Medium\" : \"Low\";\n      document.getElementById(\"energyEstimate\").innerText = `⚡ Estimated Energy: ${energyLevel}`;\n      \n      // Fetch real weather data based on geolocation\n      fetchWeather();\n      \n      let bgTheme = \"linear-gradient(to bottom right, #e3f2fd, #fce4ec)\";\n      if (mood === \"😴\") bgTheme = \"linear-gradient(to bottom right, #cfd8dc, #eceff1)\";\n      if (hour >= 19) bgTheme = \"linear-gradient(to bottom right, #bcaaa4, #efebe9)\";\n      document.body.style.setProperty('--bg-gradient', bgTheme);\n      \n      if (hour >= 19) {\n        document.getElementById(\"windDownChecklist\").innerHTML = `\n          <strong>Night Routine:</strong><br>\n          ☑️ Turn off screens early<br>\n          ☑️ Stretch or reflect<br>\n          ☑️ Express gratitude\n        `;\n      }\n    }\n    \n    function selectMood(mood) {\n      document.getElementById('selectedMood').innerText = `Today's mood: ${mood}`;\n      localStorage.setItem('mood', mood);\n      personalizeDashboard();\n    }\n    \n    function generateAffirmation() {\n      const affirmations = [\n        \"I am doing the best I can, and that is enough.\",\n        \"I take time to care for my mind and body.\",\n        \"Challenges help me grow stronger.\",\n        \"I deserve rest and kindness.\",\n        \"Wellbeing is a journey, not a destination.\"\n      ];\n      const random = affirmations[Math.floor(Math.random() * affirmations.length)];\n      document.getElementById('affirmationBox').innerText = random;\n    }\n    \n    function updateEncouragement() {\n      const checkboxes = document.querySelectorAll('.checkbox-group input[type=\"checkbox\"]');\n      let checkedCount = 0;\n      checkboxes.forEach(cb => { if (cb.checked) checkedCount++; });\n      let msg = '';\n      if (checkedCount === 0) msg = \"🤍 Be kind to yourself—tomorrow’s a new chance.\";\n      else if (checkedCount < 3) msg = \"🌱 Nice work, you're making progress.\";\n      else msg = \"💪 You’re on fire today!\";\n      document.getElementById('encouragement').innerText = msg;\n    }\n    \n    const chartCanvas = document.getElementById('stressChartCanvas').getContext('2d');\n    const stressChart = new Chart(chartCanvas, {\n      type: 'bar',\n      data: {\n        labels: ['Rest', 'Movement', 'Support', 'Reflection'],\n        datasets: [{\n          label: 'Coping Activity (%)',\n          data: [70, 50, 40, 60],\n          backgroundColor: ['#ffb74d', '#ff8a65', '#ffcc80', '#ffab91'],\n          borderRadius: 6\n        }]\n      },\n      options: {\n        responsive: true,\n        scales: {\n          y: {\n            beginAtZero: true,\n            max: 100\n          }\n        }\n      }\n    });\n    \n    window.addEventListener('DOMContentLoaded', personalizeDashboard);\n  </script>\n</body>\n</html>
