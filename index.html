@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Wellbeing Dashboard</title>
+  <title>My Smart Wellbeing Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -16,16 +16,22 @@
       background: var(--bg-gradient, linear-gradient(to bottom right, #fff3e0, #ffe0b2));
       transition: background 0.5s ease;
     }
-    h1, h2 {
+    h1 {
       text-align: center;
       color: #e65100;
+      margin-bottom: 10px;
+    }
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
     .section {
       background: #ffffff;
       border-radius: 16px;
       padding: 20px;
-      margin: 20px auto;
-      max-width: 800px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.1);
     }
     .emoji-button {
@@ -45,14 +51,21 @@
       margin-bottom: 10px;
       background: #fbe9e7;
     }
-    .affirmation-box {
+    .affirmation-box, .quote-box, .goal-box, .calendar-note, .encouragement-box, .weather-box, .focus-box, .energy-box, .winddown-box {
       margin-top: 10px;
-      font-style: italic;
-      color: #3e2723;
-      background: #ffccbc;
       padding: 12px;
       border-radius: 12px;
+      font-style: italic;
     }
+    .affirmation-box { background: #ffccbc; color: #3e2723; }
+    .quote-box { background: #ffe0b2; border-left: 6px solid #fb8c00; }
+    .goal-box { background: #fff3e0; border: 1px solid #ffb74d; }
+    .calendar-note { background: #f1f8e9; color: #558b2f; }
+    .encouragement-box { background: #ede7f6; color: #4527a0; }
+    .weather-box { background: #e3f2fd; color: #1565c0; }
+    .focus-box { background: #fff8e1; color: #f57f17; }
+    .energy-box { background: #fce4ec; color: #ad1457; }
+    .winddown-box { background: #d7ccc8; color: #4e342e; }
     button {
       padding: 12px 24px;
       border: none;
@@ -65,195 +78,133 @@
     button:hover {
       background-color: #e65100;
     }
-    canvas { max-width: 100%; }
-    .quote-box {
-      background: #ffe0b2;
-      border-left: 6px solid #fb8c00;
-      padding: 15px;
-      font-style: italic;
-      margin: 20px 0;
-      border-radius: 10px;
-    }
-    .goal-box {
-      background: #fff3e0;
-      border: 1px solid #ffb74d;
-      border-radius: 10px;
-      padding: 12px;
-      margin-top: 10px;
-    }
-    .journal-area textarea {
+    textarea {
       width: 100%;
-      height: 120px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background: #fff8e1;
-      font-size: 16px;
-      resize: vertical;
-    }
-    .breathe-box {
-      text-align: center;
-      margin-top: 20px;
-    }
-    .circle {
-      width: 100px;
       height: 100px;
-      margin: 20px auto;
-      border-radius: 50%;
-      background-color: #ffe0b2;
-      animation: breathe 4s infinite ease-in-out;
-    }
-    @keyframes breathe {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.3); }
-    }
-    .calendar-input {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 10px;
-    }
-    .calendar-input input {
       padding: 10px;
-      border: 1px solid #ccc;
       border-radius: 8px;
-      font-size: 16px;
-    }
-    .calendar-note {
-      margin-top: 10px;
-      text-align: center;
-      color: #6d4c41;
-    }
-    #greeting, #suggestion, #encouragement, #weatherTip {
-      text-align: center;
-      font-weight: 600;
-      margin-top: 10px;
+      border: 1px solid #ccc;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <h1>My Wellbeing Dashboard</h1>
+  <h1>My Smart Wellbeing Dashboard</h1>
 
-  <div class="section">
-    <h2 id="greeting"></h2>
-    <p id="suggestion"></p>
-    <p id="weatherTip"></p>
-  </div>
-
-  <div class="section">
-    <h2>Mood Tracker</h2>
-    <p>Select your mood for today:</p>
-    <div id="moodTracker" style="text-align:center;">
-      <span class="emoji-button" onclick="selectMood('😊')">😊</span>
-      <span class="emoji-button" onclick="selectMood('😐')">😐</span>
-      <span class="emoji-button" onclick="selectMood('😢')">😢</span>
-      <span class="emoji-button" onclick="selectMood('😠')">😠</span>
-      <span class="emoji-button" onclick="selectMood('😴')">😴</span>
+  <div class="dashboard-grid">
+    <div class="section">
+      <h2 id="greeting">Loading greeting...</h2>
+      <div class="focus-box" id="focusBox">Focus loading...</div>
+      <div class="weather-box" id="weatherTip">Weather insight loading...</div>
+      <div class="energy-box" id="energyEstimate">Energy level calculating...</div>
     </div>
-    <p id="selectedMood" style="text-align:center; font-size: 18px; font-weight: bold;"></p>
-  </div>
 
-  <div class="section">
-    <h2>Stress vs Coping</h2>
-    <canvas id="stressChartCanvas"></canvas>
-  </div>
-
-  <div class="section">
-    <h2>Daily Self-Care</h2>
-    <div class="checkbox-group" onchange="updateEncouragement()">
-      <label><input type="checkbox"> Drank enough water</label>
-      <label><input type="checkbox"> Got some movement</label>
-      <label><input type="checkbox"> Took 5 deep breaths</label>
-      <label><input type="checkbox"> Unplugged from screen</label>
+    <div class="section">
+      <h2>Mood Tracker</h2>
+      <div style="text-align:center;">
+        <span class="emoji-button" onclick="selectMood('😊')">😊</span>
+        <span class="emoji-button" onclick="selectMood('😐')">😐</span>
+        <span class="emoji-button" onclick="selectMood('😢')">😢</span>
+        <span class="emoji-button" onclick="selectMood('😠')">😠</span>
+        <span class="emoji-button" onclick="selectMood('😴')">😴</span>
+      </div>
+      <p id="selectedMood"></p>
+      <div class="encouragement-box" id="emotionSupport"></div>
     </div>
-    <p id="encouragement"></p>
-  </div>
 
-  <div class="section">
-    <h2>Affirmation of the Day</h2>
-    <div style="text-align: center;">
-      <button onclick="generateAffirmation()">Show me one</button>
+    <div class="section">
+      <h2>Daily Self-Care</h2>
+      <div class="checkbox-group" onchange="updateEncouragement()">
+        <label><input type="checkbox"> Drank enough water</label>
+        <label><input type="checkbox"> Got some movement</label>
+        <label><input type="checkbox"> Took 5 deep breaths</label>
+        <label><input type="checkbox"> Unplugged from screen</label>
+      </div>
+      <div class="encouragement-box" id="encouragement"></div>
+    </div>
+
+    <div class="section">
+      <h2>Affirmation</h2>
+      <button onclick="generateAffirmation()">Inspire Me</button>
       <div class="affirmation-box" id="affirmationBox"></div>
     </div>
-  </div>
 
-  <div class="section">
-    <h2>Reflection of the Week</h2>
-    <div class="quote-box">
-      "Even on the hardest days, I made time to breathe, reflect, and reset."
+    <div class="section">
+      <h2>Reflection</h2>
+      <div class="quote-box">
+        "Even on the hardest days, I made time to breathe, reflect, and reset."
+      </div>
+      <textarea placeholder="Write your thoughts here..."></textarea>
     </div>
-  </div>
 
-  <div class="section">
-    <h2>Goals for Next Week</h2>
-    <div class="goal-box">✔️ Sleep 7–8 hours per night</div>
-    <div class="goal-box">✔️ Journal twice during the week</div>
-    <div class="goal-box">✔️ Limit screen time after 9 PM</div>
-  </div>
-
-  <div class="section journal-area">
-    <h2>Write Your Journal</h2>
-    <textarea placeholder="How are you feeling today? What do you want to let go of or hold on to?"></textarea>
-  </div>
-
-  <div class="section">
-    <h2>Mindful Breathing</h2>
-    <div class="breathe-box">
-      <p>Follow the circle. Inhale... Exhale...</p>
-      <div class="circle"></div>
+    <div class="section">
+      <h2>Focus Tracker</h2>
+      <div class="checkbox-group">
+        <label><input type="checkbox"> Eat mindfully</label>
+        <label><input type="checkbox"> Unplug for 1 hour</label>
+        <label><input type="checkbox"> Compliment yourself</label>
+      </div>
     </div>
-  </div>
 
-  <div class="section">
-    <h2>Log a Calendar Entry</h2>
-    <div class="calendar-input">
-      <input type="date" id="entryDate" onchange="updateCalendarNote()">
+    <div class="section">
+      <h2>Wind-Down Checklist</h2>
+      <div class="winddown-box" id="windDownChecklist"></div>
     </div>
-    <div class="calendar-note" id="calendarNote">Choose a date to reflect or plan ahead.</div>
+
+    <div class="section">
+      <h2>Coping Chart</h2>
+      <canvas id="stressChartCanvas"></canvas>
+    </div>
   </div>
 
   <script>
     function personalizeDashboard() {
       const hour = new Date().getHours();
-      let greeting = '', tip = '', bg = '';
+      const mood = localStorage.getItem('mood');
 
-      if (hour < 12) {
-        greeting = 'Good Morning!';
-        tip = 'Set an intention for the day or take a mindful breath.';
-        bg = 'linear-gradient(to bottom right, #fff3e0, #ffe0b2)';
-      } else if (hour < 18) {
-        greeting = 'Good Afternoon!';
-        tip = 'Pause for a stretch or quick walk to recharge.';
-        bg = 'linear-gradient(to bottom right, #ffe0b2, #ffd180)';
-      } else {
-        greeting = 'Good Evening!';
-        tip = 'Reflect on what went well and take time to wind down.';
-        bg = 'linear-gradient(to bottom right, #ffe0b2, #ffccbc)';
-      }
+      // Time-based greeting
+      let greeting = hour < 12 ? "Good Morning!" : hour < 18 ? "Good Afternoon!" : "Good Evening!";
+      document.getElementById("greeting").innerText = greeting;
 
-      document.getElementById('greeting').innerText = greeting;
-      document.getElementById('suggestion').innerText = tip;
-      document.body.style.setProperty('--bg-gradient', bg);
+      // Time-based focus
+      const focusOptions = ["Hydrate regularly", "Take 3 deep breaths", "Journal for 5 minutes", "Unplug and go for a walk"];
+      document.getElementById("focusBox").innerText = `🎯 Focus of the day: ${focusOptions[Math.floor(Math.random() * focusOptions.length)]}`;
 
-      // Optional: simulate weather advice
-      const weatherOptions = ['sunny', 'cloudy', 'rainy'];
+      // Mood-based support
+      let support = "";
+      if (mood === "😢" || mood === "😠") support = "It's okay to feel this way. Take a pause and be gentle with yourself.";
+      if (mood === "😊") support = "You're glowing today. Keep the good vibes flowing!";
+      document.getElementById("emotionSupport").innerText = support;
+
+      // Energy estimator
+      let energyLevel = hour < 11 ? "High" : hour < 17 ? "Medium" : "Low";
+      document.getElementById("energyEstimate").innerText = `⚡ Estimated Energy: ${energyLevel}`;
+
+      // Simulated weather tips
+      const weatherOptions = ["sunny", "cloudy", "rainy"];
       const randomWeather = weatherOptions[Math.floor(Math.random() * weatherOptions.length)];
-      let weatherMsg = '';
+      let weatherMsg = randomWeather === "sunny" ? "☀️ Sunny: Perfect for getting outdoors!" :
+        randomWeather === "cloudy" ? "☁️ Cloudy: A great day for gentle reflection." :
+        "🌧️ Rainy: Cozy up with warm thoughts and a journal.";
+      document.getElementById("weatherTip").innerText = weatherMsg;
 
-      if (randomWeather === 'sunny') {
-        weatherMsg = "☀️ It's sunny—great time for some fresh air!";
-      } else if (randomWeather === 'cloudy') {
-        weatherMsg = "☁️ A cloudy day—stay cozy and reflect inside.";
-      } else if (randomWeather === 'rainy') {
-        weatherMsg = "🌧️ Rainy vibes—perfect for journaling and tea.";
+      // Wind-down checklist at night only
+      if (hour >= 19) {
+        document.getElementById("windDownChecklist").innerHTML = `
+          <strong>Night Routine:</strong><br>
+          ☑️ Turn off screens early<br>
+          ☑️ Stretch or reflect<br>
+          ☑️ Express gratitude
+        `;
+      } else {
+        document.getElementById("windDownChecklist").innerText = "🌙 Wind-down checklist appears after 7 PM.";
       }
-
-      document.getElementById('weatherTip').innerText = weatherMsg;
     }
 
     function selectMood(mood) {
       document.getElementById('selectedMood').innerText = `Today's mood: ${mood}`;
       localStorage.setItem('mood', mood);
+      personalizeDashboard();
     }
 
     function generateAffirmation() {
@@ -268,12 +219,6 @@
       document.getElementById('affirmationBox').innerText = random;
     }
 
-    function updateCalendarNote() {
-      const date = document.getElementById('entryDate').value;
-      const note = `📅 You selected ${date}. Take a moment to reflect, journal, or schedule self-care.`;
-      document.getElementById('calendarNote').innerText = note;
-    }
-
     function updateEncouragement() {
       const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
       let checkedCount = 0;
@@ -285,11 +230,12 @@
       document.getElementById('encouragement').innerText = msg;
     }
 
+    // Chart rendering
     const chartCanvas = document.getElementById('stressChartCanvas').getContext('2d');
     const stressChart = new Chart(chartCanvas, {
       type: 'bar',
       data: {
-        labels: ['Rest', 'Movement', 'Social Support', 'Reflection'],
+        labels: ['Rest', 'Movement', 'Support', 'Reflection'],
         datasets: [{
           label: 'Coping Activity (%)',
           data: [70, 50, 40, 60],
