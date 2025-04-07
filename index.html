@@ -33,6 +33,7 @@
       border-radius: 16px;
       padding: 20px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      min-height: 200px;
     }
     .emoji-button {
       font-size: 28px;
@@ -56,8 +57,9 @@
       padding: 12px;
       border-radius: 12px;
       font-style: italic;
+      color: #666;
     }
-    .affirmation-box { background: #ffccbc; color: #3e2723; }
+    .affirmation-box { background: #ffccbc; }
     .quote-box { background: #ffe0b2; border-left: 6px solid #fb8c00; }
     .goal-box { background: #fff3e0; border: 1px solid #ffb74d; }
     .calendar-note { background: #f1f8e9; color: #558b2f; }
@@ -94,9 +96,9 @@
   <div class="dashboard-grid">
     <div class="section">
       <h2 id="greeting">Loading greeting...</h2>
-      <div class="focus-box" id="focusBox">Focus loading...</div>
-      <div class="weather-box" id="weatherTip">Weather insight loading...</div>
-      <div class="energy-box" id="energyEstimate">Energy level calculating...</div>
+      <div class="focus-box" id="focusBox">🎯 Your daily focus will appear here.</div>
+      <div class="weather-box" id="weatherTip">🌤️ Weather insights loading...</div>
+      <div class="energy-box" id="energyEstimate">⚡ Estimated energy will be shown here.</div>
     </div>
 
     <div class="section">
@@ -108,8 +110,8 @@
         <span class="emoji-button" onclick="selectMood('😠')">😠</span>
         <span class="emoji-button" onclick="selectMood('😴')">😴</span>
       </div>
-      <p id="selectedMood"></p>
-      <div class="encouragement-box" id="emotionSupport"></div>
+      <p id="selectedMood">Your selected mood will appear here.</p>
+      <div class="encouragement-box" id="emotionSupport">💬 Mood reflection will show here.</div>
     </div>
 
     <div class="section">
@@ -120,13 +122,13 @@
         <label><input type="checkbox"> Took 5 deep breaths</label>
         <label><input type="checkbox"> Unplugged from screen</label>
       </div>
-      <div class="encouragement-box" id="encouragement"></div>
+      <div class="encouragement-box" id="encouragement">🧠 Your encouragement feedback will appear here.</div>
     </div>
 
     <div class="section">
       <h2>Affirmation</h2>
       <button onclick="generateAffirmation()">Inspire Me</button>
-      <div class="affirmation-box" id="affirmationBox"></div>
+      <div class="affirmation-box" id="affirmationBox">🌟 Your daily affirmation will show here.</div>
     </div>
 
     <div class="section">
@@ -148,7 +150,7 @@
 
     <div class="section">
       <h2>Wind-Down Checklist</h2>
-      <div class="winddown-box" id="windDownChecklist"></div>
+      <div class="winddown-box" id="windDownChecklist">🌙 Your night routine checklist will appear here after 7PM.</div>
     </div>
 
     <div class="section">
@@ -162,25 +164,21 @@
       const hour = new Date().getHours();
       const mood = localStorage.getItem('mood');
 
-      // Time-based greeting
       let greeting = hour < 12 ? "Good Morning!" : hour < 18 ? "Good Afternoon!" : "Good Evening!";
       document.getElementById("greeting").innerText = greeting;
 
-      // Time-based focus
       const focusOptions = ["Hydrate regularly", "Take 3 deep breaths", "Journal for 5 minutes", "Unplug and go for a walk"];
       document.getElementById("focusBox").innerText = `🎯 Focus of the day: ${focusOptions[Math.floor(Math.random() * focusOptions.length)]}`;
 
-      // Mood-based support
-      let support = "";
+      let support = "💬 How are you feeling today?";
       if (mood === "😢" || mood === "😠") support = "It's okay to feel this way. Take a pause and be gentle with yourself.";
-      if (mood === "😊") support = "You're glowing today. Keep the good vibes flowing!";
+      else if (mood === "😊") support = "You're glowing today. Keep the good vibes flowing!";
+      else if (mood === "😴") support = "You might need some extra rest and downtime."
       document.getElementById("emotionSupport").innerText = support;
 
-      // Energy estimator
       let energyLevel = hour < 11 ? "High" : hour < 17 ? "Medium" : "Low";
       document.getElementById("energyEstimate").innerText = `⚡ Estimated Energy: ${energyLevel}`;
 
-      // Simulated weather tips
       const weatherOptions = ["sunny", "cloudy", "rainy"];
       const randomWeather = weatherOptions[Math.floor(Math.random() * weatherOptions.length)];
       let weatherMsg = randomWeather === "sunny" ? "☀️ Sunny: Perfect for getting outdoors!" :
@@ -188,7 +186,14 @@
         "🌧️ Rainy: Cozy up with warm thoughts and a journal.";
       document.getElementById("weatherTip").innerText = weatherMsg;
 
-      // Wind-down checklist at night only
+      // Dynamic background theme change
+      let bgTheme = "linear-gradient(to bottom right, #fff3e0, #ffe0b2)";
+      if (mood === "😴") bgTheme = "linear-gradient(to bottom right, #d7ccc8, #f5f5f5)";
+      if (randomWeather === "rainy") bgTheme = "linear-gradient(to bottom right, #cfd8dc, #eceff1)";
+      if (hour >= 19) bgTheme = "linear-gradient(to bottom right, #bcaaa4, #efebe9)";
+      document.body.style.setProperty('--bg-gradient', bgTheme);
+
+      // Wind-down checklist
       if (hour >= 19) {
         document.getElementById("windDownChecklist").innerHTML = `
           <strong>Night Routine:</strong><br>
@@ -196,8 +201,6 @@
           ☑️ Stretch or reflect<br>
           ☑️ Express gratitude
         `;
-      } else {
-        document.getElementById("windDownChecklist").innerText = "🌙 Wind-down checklist appears after 7 PM.";
       }
     }
 
@@ -230,7 +233,6 @@
       document.getElementById('encouragement').innerText = msg;
     }
 
-    // Chart rendering
     const chartCanvas = document.getElementById('stressChartCanvas').getContext('2d');
     const stressChart = new Chart(chartCanvas, {
       type: 'bar',
