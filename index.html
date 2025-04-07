@@ -12,13 +12,13 @@
       font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 20px;
-      color: #3e2723;
-      background: var(--bg-gradient, linear-gradient(to bottom right, #fbe9e7, #fffde7));
+      color: #263238;
+      background: linear-gradient(to bottom right, #e3f2fd, #fce4ec);
       transition: background 0.5s ease;
     }
     h1 {
       text-align: center;
-      color: #d84315;
+      color: #00796b;
       margin-bottom: 10px;
       animation: fadeInDown 1s ease;
     }
@@ -33,7 +33,7 @@
       background: #ffffff;
       border-radius: 16px;
       padding: 20px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
       min-height: 200px;
       animation: fadeInUp 0.8s ease;
     }
@@ -57,31 +57,31 @@
     .checkbox-group label {
       display: block;
       padding: 8px;
-      border: 1px solid #d7ccc8;
+      border: 1px solid #cfd8dc;
       border-radius: 10px;
       margin-bottom: 10px;
-      background: #f1f8e9;
+      background: #e0f7fa;
     }
     .affirmation-box, .quote-box, .goal-box, .calendar-note, .encouragement-box, .weather-box, .focus-box, .energy-box, .winddown-box {
       margin-top: 10px;
       padding: 12px;
       border-radius: 12px;
       font-style: italic;
-      color: #555;
+      color: #444;
     }
-    .affirmation-box { background: #ffe0b2; }
-    .quote-box { background: #fff9c4; border-left: 6px solid #fbc02d; }
-    .goal-box { background: #e8f5e9; border: 1px solid #81c784; }
-    .calendar-note { background: #f1f8e9; color: #558b2f; }
-    .encouragement-box { background: #ede7f6; color: #5e35b1; }
-    .weather-box { background: #e3f2fd; color: #1976d2; }
-    .focus-box { background: #fff3e0; color: #ef6c00; }
-    .energy-box { background: #fce4ec; color: #c2185b; }
-    .winddown-box { background: #e0e0e0; color: #424242; }
+    .affirmation-box { background: #ffe082; }
+    .quote-box { background: #fff59d; border-left: 6px solid #fdd835; }
+    .goal-box { background: #c8e6c9; border: 1px solid #81c784; }
+    .calendar-note { background: #dcedc8; color: #558b2f; }
+    .encouragement-box { background: #e1bee7; color: #6a1b9a; }
+    .weather-box { background: #b3e5fc; color: #0277bd; }
+    .focus-box { background: #fff9c4; color: #fbc02d; }
+    .energy-box { background: #f8bbd0; color: #c2185b; }
+    .winddown-box { background: #d7ccc8; color: #4e342e; }
     button {
       padding: 12px 24px;
       border: none;
-      background-color: #ff7043;
+      background-color: #00796b;
       color: white;
       border-radius: 8px;
       cursor: pointer;
@@ -89,7 +89,7 @@
       transition: background-color 0.3s ease;
     }
     button:hover {
-      background-color: #d84315;
+      background-color: #004d40;
     }
     textarea {
       width: 100%;
@@ -109,7 +109,7 @@
       height: 100px;
       margin: 20px auto;
       border-radius: 50%;
-      background-color: #ffccbc;
+      background-color: #ce93d8;
       animation: breathe 4s infinite ease-in-out;
     }
     @keyframes breathe {
@@ -120,7 +120,6 @@
 </head>
 <body>
   <h1>My Smart Wellbeing Dashboard</h1>
-
   <div class="dashboard-grid">
     <div class="section">
       <h2 id="greeting">Loading greeting...</h2>
@@ -222,7 +221,7 @@
         "🌧️ Rainy: Cozy up with warm thoughts and a journal.";
       document.getElementById("weatherTip").innerText = weatherMsg;
 
-      let bgTheme = "linear-gradient(to bottom right, #fbe9e7, #fffde7)";
+      let bgTheme = "linear-gradient(to bottom right, #e3f2fd, #fce4ec)";
       if (mood === "😴") bgTheme = "linear-gradient(to bottom right, #cfd8dc, #eceff1)";
       if (randomWeather === "rainy") bgTheme = "linear-gradient(to bottom right, #90a4ae, #eceff1)";
       if (hour >= 19) bgTheme = "linear-gradient(to bottom right, #bcaaa4, #efebe9)";
