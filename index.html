@@ -13,7 +13,6 @@
       margin: 0;
       padding: 20px;
       color: #263238;
-      /* Fallback background if JS doesn't update */
       background: linear-gradient(to bottom right, #e3f2fd, #fce4ec);
       transition: background 0.5s ease;
     }
@@ -192,19 +191,6 @@
     // Declare weather API key only once
     const weatherApiKey = 'ddc3ba1703bde1ca03ae05e232c14db5';
     
-    // Function to update background theme based on weather description
-    function updateWeatherTheme(weatherDescription) {
-      let bgTheme = "linear-gradient(to bottom right, #e3f2fd, #fce4ec)";
-      if (weatherDescription.toLowerCase().includes("rain")) {
-        bgTheme = "linear-gradient(to bottom right, #90a4ae, #eceff1)";
-      } else if (weatherDescription.toLowerCase().includes("cloud")) {
-        bgTheme = "linear-gradient(to bottom right, #CFD8DC, #ECEFF1)";
-      } else if (weatherDescription.toLowerCase().includes("clear")) {
-        bgTheme = "linear-gradient(to bottom right, #FFF8E1, #FFECB3)";
-      }
-      document.body.style.setProperty('--bg-gradient', bgTheme);
-    }
-    
     // Function to fetch weather data using geolocation if available
     function fetchWeather() {
       if (navigator.geolocation) {
@@ -218,18 +204,7 @@
               .then(data => {
                 const weatherDescription = data.weather[0].description;
                 const temperature = data.main.temp;
-                let weatherMsg = "";
-                if (weatherDescription.toLowerCase().includes("rain")) {
-                  weatherMsg = `🌧️ ${temperature}°C - ${weatherDescription}. Don't forget your umbrella!`;
-                } else if (weatherDescription.toLowerCase().includes("cloud")) {
-                  weatherMsg = `☁️ ${temperature}°C - ${weatherDescription}. A perfect day to relax indoors.`;
-                } else if (weatherDescription.toLowerCase().includes("clear")) {
-                  weatherMsg = `☀️ ${temperature}°C - ${weatherDescription}. Enjoy the sunshine!`;
-                } else {
-                  weatherMsg = `🌤️ ${temperature}°C - ${weatherDescription}.`;
-                }
-                document.getElementById("weatherTip").innerText = weatherMsg;
-                updateWeatherTheme(weatherDescription);
+                document.getElementById("weatherTip").innerText = `☀️ ${temperature}°C - ${weatherDescription}`;
               })
               .catch(error => {
                 document.getElementById("weatherTip").innerText = "🌧️ Could not fetch weather data";
@@ -243,8 +218,119 @@
               .then(data => {
                 const weatherDescription = data.weather[0].description;
                 const temperature = data.main.temp;
-                let weatherMsg = "";
-                if (weatherDescription.toLowerCase().includes("rain")) {
-                  weatherMsg = `🌧️ ${temperature}°C - ${weatherDescription}. Don't forget your umbrella!`;
-                } else if (weatherDescription.toLowerCase().includes("cloud")) {\n                  weatherMsg = `☁️ ${temperature}°C - ${weatherDescription}. A perfect day to relax indoors.`;\n                } else if (weatherDescription.toLowerCase().includes("clear")) {\n                  weatherMsg = `☀️ ${temperature}°C - ${weatherDescription}. Enjoy the sunshine!`;\n                } else {\n                  weatherMsg = `🌤️ ${temperature}°C - ${weatherDescription}.`;\n                }\n                document.getElementById(\"weatherTip\").innerText = weatherMsg;\n                updateWeatherTheme(weatherDescription);\n              })\n              .catch(error => {\n                document.getElementById(\"weatherTip\").innerText = \"🌧️ Could not fetch weather data\";\n              });\n          }\n        );\n      } else {\n        // Geolocation not supported, fallback to static city (London)\n        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=London&appid=${weatherApiKey}&units=metric`;\n        fetch(weatherUrl)\n          .then(response => response.json())\n          .then(data => {\n            const weatherDescription = data.weather[0].description;\n            const temperature = data.main.temp;\n            let weatherMsg = \"\";\n            if (weatherDescription.toLowerCase().includes(\"rain\")) {\n              weatherMsg = `🌧️ ${temperature}°C - ${weatherDescription}. Don't forget your umbrella!`;\n            } else if (weatherDescription.toLowerCase().includes(\"cloud\")) {\n              weatherMsg = `☁️ ${temperature}°C - ${weatherDescription}. A perfect day to relax indoors.`;\n            } else if (weatherDescription.toLowerCase().includes(\"clear\")) {\n              weatherMsg = `☀️ ${temperature}°C - ${weatherDescription}. Enjoy the sunshine!`;\n            } else {\n              weatherMsg = `🌤️ ${temperature}°C - ${weatherDescription}.`;\n            }\n            document.getElementById(\"weatherTip\").innerText = weatherMsg;\n            updateWeatherTheme(weatherDescription);\n          })\n          .catch(error => {\n            document.getElementById(\"weatherTip\").innerText = \"🌧️ Could not fetch weather data\";\n          });\n      }\n    }\n    
-    function personalizeDashboard() {\n      const hour = new Date().getHours();\n      const mood = localStorage.getItem('mood');\n      \n      let greeting = hour < 12 ? \"Good Morning!\" : hour < 18 ? \"Good Afternoon!\" : \"Good Evening!\";\n      document.getElementById(\"greeting\").innerText = greeting;\n      \n      const focusOptions = [\"Hydrate regularly\", \"Take 3 deep breaths\", \"Journal for 5 minutes\", \"Unplug and go for a walk\"];\n      document.getElementById(\"focusBox\").innerText = `🎯 Focus of the day: ${focusOptions[Math.floor(Math.random() * focusOptions.length)]}`;\n      \n      let support = \"💬 How are you feeling today?\";\n      if (mood === \"😢\" || mood === \"😠\") support = \"It's okay to feel this way. Take a pause and be gentle with yourself.\";\n      else if (mood === \"😊\") support = \"You're glowing today. Keep the good vibes flowing!\";\n      else if (mood === \"😴\") support = \"You might need some extra rest and downtime.\";\n      document.getElementById(\"emotionSupport\").innerText = support;\n      \n      let energyLevel = hour < 11 ? \"High\" : hour < 17 ? \"Medium\" : \"Low\";\n      document.getElementById(\"energyEstimate\").innerText = `⚡ Estimated Energy: ${energyLevel}`;\n      \n      // Fetch real weather data based on geolocation\n      fetchWeather();\n      \n      // Set background theme based on time (weather theme is set via fetchWeather's updateWeatherTheme)\n      let bgTheme = \"linear-gradient(to bottom right, #e3f2fd, #fce4ec)\";\n      if (mood === \"😴\") bgTheme = \"linear-gradient(to bottom right, #cfd8dc, #eceff1)\";\n      if (hour >= 19) bgTheme = \"linear-gradient(to bottom right, #bcaaa4, #efebe9)\";\n      document.body.style.setProperty('--bg-gradient', bgTheme);\n      \n      if (hour >= 19) {\n        document.getElementById(\"windDownChecklist\").innerHTML = `\n          <strong>Night Routine:</strong><br>\n          ☑️ Turn off screens early<br>\n          ☑️ Stretch or reflect<br>\n          ☑️ Express gratitude\n        `;\n      }\n    }\n    \n    function selectMood(mood) {\n      document.getElementById('selectedMood').innerText = `Today's mood: ${mood}`;\n      localStorage.setItem('mood', mood);\n      personalizeDashboard();\n    }\n    \n    function generateAffirmation() {\n      const affirmations = [\n        \"I am doing the best I can, and that is enough.\",\n        \"I take time to care for my mind and body.\",\n        \"Challenges help me grow stronger.\",\n        \"I deserve rest and kindness.\",\n        \"Wellbeing is a journey, not a destination.\"\n      ];\n      const random = affirmations[Math.floor(Math.random() * affirmations.length)];\n      document.getElementById('affirmationBox').innerText = random;\n    }\n    \n    function updateEncouragement() {\n      const checkboxes = document.querySelectorAll('.checkbox-group input[type=\"checkbox\"]');\n      let checkedCount = 0;\n      checkboxes.forEach(cb => { if (cb.checked) checkedCount++; });\n      let msg = '';\n      if (checkedCount === 0) msg = \"🤍 Be kind to yourself—tomorrow’s a new chance.\";\n      else if (checkedCount < 3) msg = \"🌱 Nice work, you're making progress.\";\n      else msg = \"💪 You’re on fire today!\";\n      document.getElementById('encouragement').innerText = msg;\n    }\n    \n    const chartCanvas = document.getElementById('stressChartCanvas').getContext('2d');\n    const stressChart = new Chart(chartCanvas, {\n      type: 'bar',\n      data: {\n        labels: ['Rest', 'Movement', 'Support', 'Reflection'],\n        datasets: [{\n          label: 'Coping Activity (%)',\n          data: [70, 50, 40, 60],\n          backgroundColor: ['#ffb74d', '#ff8a65', '#ffcc80', '#ffab91'],\n          borderRadius: 6\n        }]\n      },\n      options: {\n        responsive: true,\n        scales: {\n          y: {\n            beginAtZero: true,\n            max: 100\n          }\n        }\n      }\n    });\n    \n    window.addEventListener('DOMContentLoaded', personalizeDashboard);\n  </script>\n</body>\n</html>
+                document.getElementById("weatherTip").innerText = `☀️ ${temperature}°C - ${weatherDescription}`;
+              })
+              .catch(error => {
+                document.getElementById("weatherTip").innerText = "🌧️ Could not fetch weather data";
+              });
+          }
+        );
+      } else {
+        // Geolocation not supported, fallback to static city (London)
+        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=London&appid=${weatherApiKey}&units=metric`;
+        fetch(weatherUrl)
+          .then(response => response.json())
+          .then(data => {
+            const weatherDescription = data.weather[0].description;
+            const temperature = data.main.temp;
+            document.getElementById("weatherTip").innerText = `☀️ ${temperature}°C - ${weatherDescription}`;
+          })
+          .catch(error => {
+            document.getElementById("weatherTip").innerText = "🌧️ Could not fetch weather data";
+          });
+      }
+    }
+    
+    function personalizeDashboard() {
+      const hour = new Date().getHours();
+      const mood = localStorage.getItem('mood');
+      
+      let greeting = hour < 12 ? "Good Morning!" : hour < 18 ? "Good Afternoon!" : "Good Evening!";
+      document.getElementById("greeting").innerText = greeting;
+      
+      const focusOptions = ["Hydrate regularly", "Take 3 deep breaths", "Journal for 5 minutes", "Unplug and go for a walk"];
+      document.getElementById("focusBox").innerText = `🎯 Focus of the day: ${focusOptions[Math.floor(Math.random() * focusOptions.length)]}`;
+      
+      let support = "💬 How are you feeling today?";
+      if (mood === "😢" || mood === "😠") support = "It's okay to feel this way. Take a pause and be gentle with yourself.";
+      else if (mood === "😊") support = "You're glowing today. Keep the good vibes flowing!";
+      else if (mood === "😴") support = "You might need some extra rest and downtime.";
+      document.getElementById("emotionSupport").innerText = support;
+      
+      let energyLevel = hour < 11 ? "High" : hour < 17 ? "Medium" : "Low";
+      document.getElementById("energyEstimate").innerText = `⚡ Estimated Energy: ${energyLevel}`;
+      
+      // Fetch real weather data based on geolocation
+      fetchWeather();
+      
+      let bgTheme = "linear-gradient(to bottom right, #e3f2fd, #fce4ec)";
+      if (mood === "😴") bgTheme = "linear-gradient(to bottom right, #cfd8dc, #eceff1)";
+      if (hour >= 19) bgTheme = "linear-gradient(to bottom right, #bcaaa4, #efebe9)";
+      document.body.style.setProperty('--bg-gradient', bgTheme);
+      
+      if (hour >= 19) {
+        document.getElementById("windDownChecklist").innerHTML = `
+          <strong>Night Routine:</strong><br>
+          ☑️ Turn off screens early<br>
+          ☑️ Stretch or reflect<br>
+          ☑️ Express gratitude
+        `;
+      }
+    }
+    
+    function selectMood(mood) {
+      document.getElementById('selectedMood').innerText = `Today's mood: ${mood}`;
+      localStorage.setItem('mood', mood);
+      personalizeDashboard();
+    }
+    
+    function generateAffirmation() {
+      const affirmations = [
+        "I am doing the best I can, and that is enough.",
+        "I take time to care for my mind and body.",
+        "Challenges help me grow stronger.",
+        "I deserve rest and kindness.",
+        "Wellbeing is a journey, not a destination."
+      ];
+      const random = affirmations[Math.floor(Math.random() * affirmations.length)];
+      document.getElementById('affirmationBox').innerText = random;
+    }
+    
+    function updateEncouragement() {
+      const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
+      let checkedCount = 0;
+      checkboxes.forEach(cb => { if (cb.checked) checkedCount++; });
+      let msg = '';
+      if (checkedCount === 0) msg = "🤍 Be kind to yourself—tomorrow’s a new chance.";
+      else if (checkedCount < 3) msg = "🌱 Nice work, you're making progress.";
+      else msg = "💪 You’re on fire today!";
+      document.getElementById('encouragement').innerText = msg;
+    }
+    
+    const chartCanvas = document.getElementById('stressChartCanvas').getContext('2d');
+    const stressChart = new Chart(chartCanvas, {
+      type: 'bar',
+      data: {
+        labels: ['Rest', 'Movement', 'Support', 'Reflection'],
+        datasets: [{
+          label: 'Coping Activity (%)',
+          data: [70, 50, 40, 60],
+          backgroundColor: ['#ffb74d', '#ff8a65', '#ffcc80', '#ffab91'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100
+          }
+        }
+      }
+    });
+    
+    window.addEventListener('DOMContentLoaded', personalizeDashboard);
+  </script>
+</body>
+</html>
