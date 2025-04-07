@@ -188,22 +188,57 @@
   </div>
   
   <script>
-    // Declare weather API key and city only once
+    // Declare weather API key only once
     const weatherApiKey = 'ddc3ba1703bde1ca03ae05e232c14db5';
-    const city = 'London';
     
+    // Function to fetch weather data using geolocation if available
     function fetchWeather() {
-      const weatherUrl = https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${weatherApiKey}&units=metric;
-      fetch(weatherUrl)
-        .then(response => response.json())
-        .then(data => {
-          const weatherDescription = data.weather[0].description;
-          const temperature = data.main.temp;
-          document.getElementById("weatherTip").innerText = ☀️ ${temperature}°C - ${weatherDescription};
-        })
-        .catch(error => {
-          document.getElementById("weatherTip").innerText = "🌧️ Could not fetch weather data";
-        });
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=metric`;
+            fetch(weatherUrl)
+              .then(response => response.json())
+              .then(data => {
+                const weatherDescription = data.weather[0].description;
+                const temperature = data.main.temp;
+                document.getElementById("weatherTip").innerText = `☀️ ${temperature}°C - ${weatherDescription}`;
+              })
+              .catch(error => {
+                document.getElementById("weatherTip").innerText = "🌧️ Could not fetch weather data";
+              });
+          },
+          function(error) {
+            // Fallback: use static city (London)
+            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=London&appid=${weatherApiKey}&units=metric`;
+            fetch(weatherUrl)
+              .then(response => response.json())
+              .then(data => {
+                const weatherDescription = data.weather[0].description;
+                const temperature = data.main.temp;
+                document.getElementById("weatherTip").innerText = `☀️ ${temperature}°C - ${weatherDescription}`;
+              })
+              .catch(error => {
+                document.getElementById("weatherTip").innerText = "🌧️ Could not fetch weather data";
+              });
+          }
+        );
+      } else {
+        // Geolocation not supported, fallback to static city (London)
+        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=London&appid=${weatherApiKey}&units=metric`;
+        fetch(weatherUrl)
+          .then(response => response.json())
+          .then(data => {
+            const weatherDescription = data.weather[0].description;
+            const temperature = data.main.temp;
+            document.getElementById("weatherTip").innerText = `☀️ ${temperature}°C - ${weatherDescription}`;
+          })
+          .catch(error => {
+            document.getElementById("weatherTip").innerText = "🌧️ Could not fetch weather data";
+          });
+      }
     }
     
     function personalizeDashboard() {
@@ -214,7 +249,7 @@
       document.getElementById("greeting").innerText = greeting;
       
       const focusOptions = ["Hydrate regularly", "Take 3 deep breaths", "Journal for 5 minutes", "Unplug and go for a walk"];
-      document.getElementById("focusBox").innerText = 🎯 Focus of the day: ${focusOptions[Math.floor(Math.random() * focusOptions.length)]};
+      document.getElementById("focusBox").innerText = `🎯 Focus of the day: ${focusOptions[Math.floor(Math.random() * focusOptions.length)]}`;
       
       let support = "💬 How are you feeling today?";
       if (mood === "😢" || mood === "😠") support = "It's okay to feel this way. Take a pause and be gentle with yourself.";
@@ -223,9 +258,9 @@
       document.getElementById("emotionSupport").innerText = support;
       
       let energyLevel = hour < 11 ? "High" : hour < 17 ? "Medium" : "Low";
-      document.getElementById("energyEstimate").innerText = ⚡ Estimated Energy: ${energyLevel};
+      document.getElementById("energyEstimate").innerText = `⚡ Estimated Energy: ${energyLevel}`;
       
-      // Fetch real weather data
+      // Fetch real weather data based on geolocation
       fetchWeather();
       
       let bgTheme = "linear-gradient(to bottom right, #e3f2fd, #fce4ec)";
@@ -234,17 +269,17 @@
       document.body.style.setProperty('--bg-gradient', bgTheme);
       
       if (hour >= 19) {
-        document.getElementById("windDownChecklist").innerHTML = 
+        document.getElementById("windDownChecklist").innerHTML = `
           <strong>Night Routine:</strong><br>
           ☑️ Turn off screens early<br>
           ☑️ Stretch or reflect<br>
           ☑️ Express gratitude
-        ;
+        `;
       }
     }
     
     function selectMood(mood) {
-      document.getElementById('selectedMood').innerText = Today's mood: ${mood};
+      document.getElementById('selectedMood').innerText = `Today's mood: ${mood}`;
       localStorage.setItem('mood', mood);
       personalizeDashboard();
     }
