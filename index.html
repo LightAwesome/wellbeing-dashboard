@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Smart Wellbeing Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13,7 +13,7 @@
       margin: 0;
       padding: 20px;
       color: #263238;
-      background: var(--bg-gradient, linear-gradient(to bottom right, #e3f2fd, #fce4ec));
+      background: linear-gradient(to bottom right, #e3f2fd, #fce4ec);
       transition: background 0.5s ease;
     }
     h1 {
@@ -37,22 +37,23 @@
       min-height: 200px;
       animation: fadeInUp 0.8s ease;
     }
-    .fade-in-up { opacity: 0; transform: translateY(20px); animation: fadeInUp 1s forwards; }
-    .fade-in-down { opacity: 0; transform: translateY(-20px); animation: fadeInDown 1s forwards; }
-    .fade-in { opacity: 0; animation: fadeIn 1s forwards; }
-
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeIn { to { opacity: 1; } }
-
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     .emoji-button {
       font-size: 28px;
       margin: 10px;
       cursor: pointer;
       transition: transform 0.2s;
     }
-    .emoji-button:hover { transform: scale(1.3); }
-
+    .emoji-button:hover {
+      transform: scale(1.3);
+    }
     .checkbox-group label {
       display: block;
       padding: 8px;
@@ -61,7 +62,6 @@
       margin-bottom: 10px;
       background: #e0f7fa;
     }
-
     .affirmation-box, .quote-box, .goal-box, .calendar-note, .encouragement-box, 
     .weather-box, .focus-box, .energy-box, .winddown-box {
       margin-top: 10px;
@@ -70,26 +70,15 @@
       font-style: italic;
       color: #444;
     }
-
     .affirmation-box { background: #ffe082; }
     .quote-box { background: #fff59d; border-left: 6px solid #fdd835; }
     .goal-box { background: #c8e6c9; border: 1px solid #81c784; }
     .calendar-note { background: #dcedc8; color: #558b2f; }
     .encouragement-box { background: #e1bee7; color: #6a1b9a; }
-
-    .weather-box {
-      background: #b3e5fc; color: #0277bd;
-      animation: float 4s ease-in-out infinite;
-    }
+    .weather-box { background: #b3e5fc; color: #0277bd; }
     .focus-box { background: #fff9c4; color: #fbc02d; }
     .energy-box { background: #f8bbd0; color: #c2185b; }
     .winddown-box { background: #d7ccc8; color: #4e342e; }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
-    }
-
     button {
       padding: 12px 24px;
       border: none;
@@ -100,8 +89,9 @@
       font-weight: 600;
       transition: background-color 0.3s ease;
     }
-    button:hover { background-color: #004d40; }
-
+    button:hover {
+      background-color: #004d40;
+    }
     textarea {
       width: 100%;
       height: 100px;
@@ -110,7 +100,6 @@
       border: 1px solid #ccc;
       font-size: 14px;
     }
-
     .breathe-box {
       text-align: center;
       margin-top: 20px;
@@ -133,14 +122,14 @@
 <body>
   <h1>My Smart Wellbeing Dashboard</h1>
   <div class="dashboard-grid">
-    <div class="section fade-in-up">
-      <h2 id="greeting" class="fade-in-down">Loading greeting...</h2>
-      <div class="focus-box fade-in" id="focusBox">🎯 Your daily focus will appear here.</div>
-      <div class="weather-box fade-in" id="weatherTip">🌤️ Weather insights loading...</div>
-      <div class="energy-box fade-in" id="energyEstimate">⚡ Estimated energy will be shown here.</div>
+    <div class="section">
+      <h2 id="greeting">Loading greeting...</h2>
+      <div class="focus-box" id="focusBox">🎯 Your daily focus will appear here.</div>
+      <div class="weather-box" id="weatherTip">🌤️ Weather insights loading...</div>
+      <div class="energy-box" id="energyEstimate">⚡ Estimated energy will be shown here.</div>
     </div>
-    <div class="section fade-in-up">
-      <h2 class="fade-in-down">Mood Tracker</h2>
+    <div class="section">
+      <h2>Mood Tracker</h2>
       <div style="text-align:center;">
         <span class="emoji-button" onclick="selectMood('😊')">😊</span>
         <span class="emoji-button" onclick="selectMood('😐')">😐</span>
@@ -151,8 +140,8 @@
       <p id="selectedMood">Your selected mood will appear here.</p>
       <div class="encouragement-box" id="emotionSupport">💬 Mood reflection will show here.</div>
     </div>
-    <div class="section fade-in-up">
-      <h2 class="fade-in-down">Daily Self-Care</h2>
+    <div class="section">
+      <h2>Daily Self-Care</h2>
       <div class="checkbox-group" onchange="updateEncouragement()">
         <label><input type="checkbox"> Drank enough water</label>
         <label><input type="checkbox"> Got some movement</label>
@@ -161,105 +150,124 @@
       </div>
       <div class="encouragement-box" id="encouragement">🧠 Your encouragement feedback will appear here.</div>
     </div>
-    <div class="section fade-in-up">
-      <h2 class="fade-in-down">Affirmation</h2>
+    <div class="section">
+      <h2>Affirmation</h2>
       <button onclick="generateAffirmation()">Inspire Me</button>
-      <div class="affirmation-box fade-in" id="affirmationBox">🌟 Your daily affirmation will show here.</div>
+      <div class="affirmation-box" id="affirmationBox">🌟 Your daily affirmation will show here.</div>
     </div>
-    <div class="section fade-in-up">
-      <h2 class="fade-in-down">Mindful Breathing</h2>
+    <div class="section">
+      <h2>Mindful Breathing</h2>
       <div class="breathe-box">
         <p>Follow the circle. Inhale... Exhale...</p>
         <div class="circle"></div>
       </div>
     </div>
-    <div class="section fade-in-up">
-      <h2 class="fade-in-down">Reflection</h2>
-      <div class="quote-box">"Even on the hardest days, I made time to breathe, reflect, and reset."</div>
+    <div class="section">
+      <h2>Reflection</h2>
+      <div class="quote-box">
+        "Even on the hardest days, I made time to breathe, reflect, and reset."
+      </div>
       <textarea placeholder="Write your thoughts here..."></textarea>
     </div>
-    <div class="section fade-in-up">
-      <h2 class="fade-in-down">Focus Tracker</h2>
+    <div class="section">
+      <h2>Focus Tracker</h2>
       <div class="checkbox-group">
         <label><input type="checkbox"> Eat mindfully</label>
         <label><input type="checkbox"> Unplug for 1 hour</label>
         <label><input type="checkbox"> Compliment yourself</label>
       </div>
     </div>
-    <div class="section fade-in-up">
-      <h2 class="fade-in-down">Wind-Down Checklist</h2>
+    <div class="section">
+      <h2>Wind-Down Checklist</h2>
       <div class="winddown-box" id="windDownChecklist">🌙 Your night routine checklist will appear here after 7PM.</div>
     </div>
-    <div class="section fade-in-up">
-      <h2 class="fade-in-down">Coping Chart</h2>
+    <div class="section">
+      <h2>Coping Chart</h2>
       <canvas id="stressChartCanvas"></canvas>
     </div>
   </div>
-
+  
   <script>
+    // Declare weather API key only once
     const weatherApiKey = 'ddc3ba1703bde1ca03ae05e232c14db5';
-
+    
+    // Function to fetch weather data using geolocation if available
     function fetchWeather() {
-      function applyWeatherTheme(description, temperature, weatherDescription) {
-        let bg;
-        const desc = description.toLowerCase();
-        if (desc.includes('rain')) {
-          bg = 'linear-gradient(to bottom right, #e1f5fe, #b3e5fc)';
-        } else if (desc.includes('cloud')) {
-          bg = 'linear-gradient(to bottom right, #eceff1, #cfd8dc)';
-        } else if (desc.includes('clear') || desc.includes('sun')) {
-          bg = 'linear-gradient(to bottom right, #fff8e1, #ffe082)';
-        } else {
-          bg = 'linear-gradient(to bottom right, #e3f2fd, #fce4ec)';
-        }
-        document.body.style.setProperty('--bg-gradient', bg);
-        document.getElementById("weatherTip").innerText = `🌤️ ${temperature}°C - ${weatherDescription}`;
-      }
-
-      function fetchWithURL(url) {
-        fetch(url)
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=metric`;
+            fetch(weatherUrl)
+              .then(response => response.json())
+              .then(data => {
+                const weatherDescription = data.weather[0].description;
+                const temperature = data.main.temp;
+                document.getElementById("weatherTip").innerText = `☀️ ${temperature}°C - ${weatherDescription}`;
+              })
+              .catch(error => {
+                document.getElementById("weatherTip").innerText = "🌧️ Could not fetch weather data";
+              });
+          },
+          function(error) {
+            // Fallback: use static city (London)
+            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=London&appid=${weatherApiKey}&units=metric`;
+            fetch(weatherUrl)
+              .then(response => response.json())
+              .then(data => {
+                const weatherDescription = data.weather[0].description;
+                const temperature = data.main.temp;
+                document.getElementById("weatherTip").innerText = `☀️ ${temperature}°C - ${weatherDescription}`;
+              })
+              .catch(error => {
+                document.getElementById("weatherTip").innerText = "🌧️ Could not fetch weather data";
+              });
+          }
+        );
+      } else {
+        // Geolocation not supported, fallback to static city (London)
+        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=London&appid=${weatherApiKey}&units=metric`;
+        fetch(weatherUrl)
           .then(response => response.json())
           .then(data => {
-            const desc = data.weather[0].main;
-            const temp = data.main.temp;
-            const fullDesc = data.weather[0].description;
-            applyWeatherTheme(desc, temp, fullDesc);
+            const weatherDescription = data.weather[0].description;
+            const temperature = data.main.temp;
+            document.getElementById("weatherTip").innerText = `☀️ ${temperature}°C - ${weatherDescription}`;
           })
-          .catch(() => {
+          .catch(error => {
             document.getElementById("weatherTip").innerText = "🌧️ Could not fetch weather data";
           });
       }
-
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=metric`;
-            fetchWithURL(url);
-          },
-          () => fetchWithURL(`https://api.openweathermap.org/data/2.5/weather?q=London&appid=${weatherApiKey}&units=metric`)
-        );
-      } else {
-        fetchWithURL(`https://api.openweathermap.org/data/2.5/weather?q=London&appid=${weatherApiKey}&units=metric`);
-      }
     }
-
+    
     function personalizeDashboard() {
       const hour = new Date().getHours();
       const mood = localStorage.getItem('mood');
-      const greeting = hour < 12 ? "Good Morning!" : hour < 18 ? "Good Afternoon!" : "Good Evening!";
+      
+      let greeting = hour < 12 ? "Good Morning!" : hour < 18 ? "Good Afternoon!" : "Good Evening!";
       document.getElementById("greeting").innerText = greeting;
+      
       const focusOptions = ["Hydrate regularly", "Take 3 deep breaths", "Journal for 5 minutes", "Unplug and go for a walk"];
       document.getElementById("focusBox").innerText = `🎯 Focus of the day: ${focusOptions[Math.floor(Math.random() * focusOptions.length)]}`;
+      
       let support = "💬 How are you feeling today?";
       if (mood === "😢" || mood === "😠") support = "It's okay to feel this way. Take a pause and be gentle with yourself.";
       else if (mood === "😊") support = "You're glowing today. Keep the good vibes flowing!";
       else if (mood === "😴") support = "You might need some extra rest and downtime.";
       document.getElementById("emotionSupport").innerText = support;
-      const energyLevel = hour < 11 ? "High" : hour < 17 ? "Medium" : "Low";
+      
+      let energyLevel = hour < 11 ? "High" : hour < 17 ? "Medium" : "Low";
       document.getElementById("energyEstimate").innerText = `⚡ Estimated Energy: ${energyLevel}`;
+      
+      // Fetch real weather data based on geolocation
       fetchWeather();
+      
+      let bgTheme = "linear-gradient(to bottom right, #e3f2fd, #fce4ec)";
+      if (mood === "😴") bgTheme = "linear-gradient(to bottom right, #cfd8dc, #eceff1)";
+      if (hour >= 19) bgTheme = "linear-gradient(to bottom right, #bcaaa4, #efebe9)";
+      document.body.style.setProperty('--bg-gradient', bgTheme);
+      
       if (hour >= 19) {
         document.getElementById("windDownChecklist").innerHTML = `
           <strong>Night Routine:</strong><br>
@@ -269,13 +277,13 @@
         `;
       }
     }
-
+    
     function selectMood(mood) {
       document.getElementById('selectedMood').innerText = `Today's mood: ${mood}`;
       localStorage.setItem('mood', mood);
       personalizeDashboard();
     }
-
+    
     function generateAffirmation() {
       const affirmations = [
         "I am doing the best I can, and that is enough.",
@@ -287,17 +295,18 @@
       const random = affirmations[Math.floor(Math.random() * affirmations.length)];
       document.getElementById('affirmationBox').innerText = random;
     }
-
+    
     function updateEncouragement() {
       const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
       let checkedCount = 0;
       checkboxes.forEach(cb => { if (cb.checked) checkedCount++; });
-      const msg = checkedCount === 0 ? "🤍 Be kind to yourself—tomorrow’s a new chance."
-                 : checkedCount < 3 ? "🌱 Nice work, you're making progress."
-                 : "💪 You’re on fire today!";
+      let msg = '';
+      if (checkedCount === 0) msg = "🤍 Be kind to yourself—tomorrow’s a new chance.";
+      else if (checkedCount < 3) msg = "🌱 Nice work, you're making progress.";
+      else msg = "💪 You’re on fire today!";
       document.getElementById('encouragement').innerText = msg;
     }
-
+    
     const chartCanvas = document.getElementById('stressChartCanvas').getContext('2d');
     const stressChart = new Chart(chartCanvas, {
       type: 'bar',
@@ -320,7 +329,7 @@
         }
       }
     });
-
+    
     window.addEventListener('DOMContentLoaded', personalizeDashboard);
   </script>
 </body>
