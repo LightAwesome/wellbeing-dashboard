@@ -185,6 +185,13 @@
       <h2>Coping Chart</h2>
       <canvas id="stressChartCanvas"></canvas>
     </div>
+    <div class="section">
+  <h2>Mood Music</h2>
+  <input type="text" id="playlistInput" placeholder="Paste your Spotify playlist link here" style="width:100%;padding:10px;border-radius:8px;margin-bottom:10px;">
+  <button onclick="updatePlaylist()">Load Playlist</button>
+  <iframe id="spotifyPlayer" style="border-radius:12px" width="100%" height="152" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+</div>
+
   </div>
   
   <script>
@@ -331,6 +338,20 @@
     });
     
     window.addEventListener('DOMContentLoaded', personalizeDashboard);
+
+
+    function updatePlaylist() {
+  const input = document.getElementById("playlistInput").value;
+  const match = input.match(/(?:playlist\/)([a-zA-Z0-9]+)/);
+  if (match && match[1]) {
+    const playlistId = match[1];
+    const embedUrl = `https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator`;
+    document.getElementById("spotifyPlayer").src = embedUrl;
+  } else {
+    alert("Please enter a valid Spotify playlist link.");
+  }
+}
+
   </script>
 </body>
 </html>
